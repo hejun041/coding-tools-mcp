@@ -1,0 +1,43 @@
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+
+from tests.compliance.test_support import ComplianceTestCase
+
+
+@dataclass
+class DeterministicMCPOnlyAgent:
+    client: object
+    calls: list[str] = field(default_factory=list)
+
+    def call(self, name: str, arguments: dict[str, object]) -> dict[str, object]:
+        self.calls.append(name)
+        return self.client.call_tool(name, arguments)  # type: ignore[attr-defined]
+
+
+class DogfoodMCPOnlyTests(ComplianceTestCase):
+    def test_mcp_only_agent_completes_js_bugfix_without_direct_bypass(self) -> None:
+        agent = DeterministicMCPOnlyAgent(self.client)
+        search = agent.call("search_text", {"query": "function add", "glob": "**/*.js"})
+        self.assertIn("src/math.js", self.tool_text(search))
+        source = agent.call("read_file", {"path": "src/math.js"})
+        self.assertIn("return a - b", self.tool_text(source))
+        patch = """*** Begin Patch
+*** Update File: src/math.js
+@@
+ export function add(a, b) {
+-  return a - b;
++  return a + b;
+ }
+*** End Patch
+"""
+        self.assert_tool_success(agent.call("apply_patch", {"patch": patch}))
+        test = agent.call("exec_command", {"cmd": "npm test", "timeout_ms": 10000, "max_output_bytes": 20000})
+        self.assertEqual(self.assert_tool_success(test).get("exit_code"), 0)
+        diff = agent.call("git_diff", {"path": "src/math.js"})
+        self.assertIn("+  return a + b;", self.tool_text(diff))
+        self.assertEqual(
+            agent.calls,
+            ["search_text", "read_file", "apply_patch", "exec_command", "git_diff"],
+            "dogfood agent must use only MCP tools in the deterministic loop",
+        )

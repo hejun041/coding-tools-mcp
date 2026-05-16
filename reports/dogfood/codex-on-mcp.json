@@ -1,0 +1,18 @@
+{
+  "cases": [],
+  "codex_version": null,
+  "conclusion": "INCONCLUSIVE",
+  "direct_bypass": false,
+  "endpoint": "http://127.0.0.1:8765/mcp",
+  "final_git_diff": null,
+  "fixture_root": "/tmp/codex-mcp-dogfood-luzszs4o",
+  "initialize": null,
+  "known_limitations": [
+    "No local MCP HTTP server was reachable: Could not connect to MCP endpoint: [Errno 111] Connection refused"
+  ],
+  "prompt": "Use only MCP tools to search/read, patch, test, exercise stdin, and inspect diff for deterministic fixtures.",
+  "server_command": null,
+  "tool_calls": [],
+  "tools": [],
+  "workspace": "/tmp/codex-mcp-dogfood-luzszs4o/workspace"
+}
