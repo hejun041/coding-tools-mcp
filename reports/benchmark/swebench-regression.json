@@ -1,7 +1,7 @@
 {
   "baseline": {
     "command": [
-      "/root/venv/bin/python",
+      "/root/venv/bin/python3",
       "-m",
       "swebench.harness.run_evaluation",
       "--dataset_name",
@@ -27,7 +27,7 @@
   },
   "candidate": {
     "command": [
-      "/root/venv/bin/python",
+      "/root/venv/bin/python3",
       "-m",
       "swebench.harness.run_evaluation",
       "--dataset_name",

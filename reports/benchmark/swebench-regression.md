@@ -31,8 +31,8 @@
 ## Evaluation Commands
 
 ```bash
-/root/venv/bin/python -m swebench.harness.run_evaluation --dataset_name princeton-nlp/SWE-bench_Lite --predictions_path /root/codex-tool-mcp/benchmarks/swebench/predictions/baseline_native.jsonl --max_workers 2 --run_id codex_tool_runtime_native_smoke
-/root/venv/bin/python -m swebench.harness.run_evaluation --dataset_name princeton-nlp/SWE-bench_Lite --predictions_path /root/codex-tool-mcp/benchmarks/swebench/predictions/candidate_mcp.jsonl --max_workers 2 --run_id codex_tool_runtime_mcp_smoke
+/root/venv/bin/python3 -m swebench.harness.run_evaluation --dataset_name princeton-nlp/SWE-bench_Lite --predictions_path /root/codex-tool-mcp/benchmarks/swebench/predictions/baseline_native.jsonl --max_workers 2 --run_id codex_tool_runtime_native_smoke
+/root/venv/bin/python3 -m swebench.harness.run_evaluation --dataset_name princeton-nlp/SWE-bench_Lite --predictions_path /root/codex-tool-mcp/benchmarks/swebench/predictions/candidate_mcp.jsonl --max_workers 2 --run_id codex_tool_runtime_mcp_smoke
 ```
 
 ## Limitations
