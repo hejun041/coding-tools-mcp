@@ -576,16 +576,15 @@ class Runtime:
         affected: list[dict[str, str]] = []
         for op in operations:
             self._validate_patch_path(op.path, require_existing=op.kind in {"update", "delete"})
-            if op.kind in {"update", "delete"}:
+            if op.kind in {"add", "update", "delete"}:
                 self.workspace.reject_write_symlink(op.path)
             if op.move_to:
                 self._validate_patch_path(op.move_to, require_existing=False)
                 self.workspace.reject_write_symlink(op.move_to)
             if op.kind == "add":
                 target = self.workspace.resolve_for_write(op.path)
-                target.path.parent.mkdir(parents=True, exist_ok=True) if dry_run else None
-                if target.path.exists() and target.path.is_dir():
-                    raise ToolFailure("PATCH_FAILED", "Cannot add file over a directory.", category="validation")
+                if target.existed:
+                    raise ToolFailure("PATCH_FAILED", "Cannot add file that already exists.", category="validation")
                 staged[target.display] = op.add_content or ""
                 affected.append({"path": target.display, "operation": "add"})
                 summaries.append(f"A {target.display}")

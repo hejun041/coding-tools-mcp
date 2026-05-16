@@ -89,6 +89,17 @@ class ApplyPatchGoldenTests(ComplianceTestCase):
 """
         self.assert_tool_success(self.client.call_tool("apply_patch", {"patch": add}))
         self.assertIn("Added by apply_patch", self.tool_text(self.client.call_tool("read_file", {"path": "docs/NOTES.md"})))
+        self.assert_tool_error("apply_patch", {"patch": add})
+
+        with self.session_for_fixture("tiny-js-project") as (_workspace, client):
+            dry_run_add = """*** Begin Patch
+*** Add File: dry-run/new/NOPE.md
++dry run only
+*** End Patch
+"""
+            self.assert_tool_success(client.call_tool("apply_patch", {"patch": dry_run_add, "dry_run": True}))
+            self.assert_tool_error("read_file", {"path": "dry-run/new/NOPE.md"})
+            self.assert_tool_error("list_dir", {"path": "dry-run"})
 
         self.assert_tool_success(self.client.call_tool("apply_patch", {"patch": ADD_FIX_PATCH}))
         self.assertIn("return a + b", self.tool_text(self.client.call_tool("read_file", {"path": "src/math.js"})))
