@@ -8,11 +8,12 @@ Repository:
 
 - https://github.com/ytagent/codex-tool-runtime-mcp
 
-Current pushed evidence before this report:
+Current pushed evidence before this report update:
 
-- Latest verified CI commit: `7cada8b369eef55db6f8df2588d4d1943a62804e`
-- CI run: https://github.com/ytagent/codex-tool-runtime-mcp/actions/runs/25957272106
+- Latest verified CI commit: `16ab9ace68b1241f1f2a2b63a1b62c35102e95da`
+- CI run: https://github.com/ytagent/codex-tool-runtime-mcp/actions/runs/25957328972
 - CI conclusion: `success`
+- Release tag: `v0.1.0`
 
 ## Implemented Tools
 
@@ -74,7 +75,7 @@ Evidence:
 
 GitHub Actions:
 
-- https://github.com/ytagent/codex-tool-runtime-mcp/actions/runs/25957272106
+- https://github.com/ytagent/codex-tool-runtime-mcp/actions/runs/25957328972
 - conclusion: `success`
 
 ## Dogfood
@@ -125,11 +126,11 @@ The official SWE-bench harness was not run because Docker and the `swebench` Pyt
 | MCP profile written | `docs/profile-v0.1.md`, `docs/profile.md` |
 | P0 tools implemented | `codex_tool_runtime_mcp/server.py`, `tools/list` compliance tests |
 | Forbidden product tools absent | `test_tools_list_excludes_forbidden_product_layer_tools` |
-| `make compliance` passes | `reports/compliance/latest.json`, CI run `25957272106` |
+| `make compliance` passes | `reports/compliance/latest.json`, CI run `25957328972` |
 | Dogfood complete | `reports/dogfood/codex-on-mcp.md` |
 | SWE-bench/benchmark report complete | `reports/benchmark/swebench-regression.md`, conclusion INCONCLUSIVE |
 | Docs complete | `README.md`, `SPEC.md`, `COMPLIANCE.md`, `SECURITY.md`, `BENCHMARK.md`, this report |
-| CI verification | `.github/workflows/compliance.yml`, run `25957272106` |
+| CI verification | `.github/workflows/compliance.yml`, run `25957328972` |
 
 ## Follow-Up Roadmap
 
@@ -138,4 +139,3 @@ The official SWE-bench harness was not run because Docker and the `swebench` Pyt
 3. Replace SWE-bench placeholder predictions with real native and MCP candidate runs.
 4. Run official SWE-bench Lite smoke with Docker and `swebench`.
 5. Expand Codex `apply_patch` compatibility vectors.
-

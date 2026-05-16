@@ -41,9 +41,9 @@ GitHub Actions workflow:
 
 Latest verified run:
 
-- https://github.com/ytagent/codex-tool-runtime-mcp/actions/runs/25957272106
+- https://github.com/ytagent/codex-tool-runtime-mcp/actions/runs/25957328972
 - conclusion: `success`
-- head SHA at run time: `7cada8b369eef55db6f8df2588d4d1943a62804e`
+- head SHA at run time: `16ab9ace68b1241f1f2a2b63a1b62c35102e95da`
 
 ## Coverage
 
@@ -67,4 +67,3 @@ make test-codex-compat
 make dogfood-mcp
 make benchmark-smoke
 ```
-

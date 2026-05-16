@@ -30,11 +30,10 @@ Fix:
 
 Verified run:
 
-- URL: https://github.com/ytagent/codex-tool-runtime-mcp/actions/runs/25957272106
+- URL: https://github.com/ytagent/codex-tool-runtime-mcp/actions/runs/25957328972
 - conclusion: success
-- head SHA: `7cada8b369eef55db6f8df2588d4d1943a62804e`
+- head SHA: `16ab9ace68b1241f1f2a2b63a1b62c35102e95da`
 
 ## Remaining Notes
 
 GitHub emitted a Node.js 20 action deprecation warning for `actions/checkout@v4` and `actions/setup-python@v5`. It does not affect the current pass.
-

@@ -123,7 +123,7 @@ Current local result:
 
 GitHub Actions also runs compliance:
 
-- latest verified run: https://github.com/ytagent/codex-tool-runtime-mcp/actions/runs/25957272106
+- latest verified run: https://github.com/ytagent/codex-tool-runtime-mcp/actions/runs/25957328972
 
 ## Dogfood And Benchmark
 
@@ -151,4 +151,3 @@ make dogfood-mcp
 make benchmark-smoke
 make report
 ```
-
