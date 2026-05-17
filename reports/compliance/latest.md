@@ -1,11 +1,11 @@
 # Compliance Report
 
 - profile: `codex-tool-runtime-mcp-v0.1`
-- commit: `52a6249ee18b31fcc536040ad24139c7c62f1d9b`
+- commit: `3461370c9dfcbef8daaace69e27ff9b6a0d2d514`
 - suite: `all`
 - passed: `true`
 - tests_run: `59`
-- elapsed_seconds: `14.071`
+- elapsed_seconds: `14.07`
 
 ## Required Tools
 

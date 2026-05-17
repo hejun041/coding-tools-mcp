@@ -246,7 +246,8 @@ class MCPClient:
             headers["Mcp-Session-Id"] = self.session_id
         request = urllib.request.Request(self.url, data=data, headers=headers, method="POST")
         try:
-            with urllib.request.urlopen(request, timeout=5) as response:
+            request_timeout = float(os.environ.get("CODEX_TOOL_RUNTIME_CLIENT_TIMEOUT", "30"))
+            with urllib.request.urlopen(request, timeout=request_timeout) as response:
                 session_id = response.headers.get("Mcp-Session-Id")
                 if session_id:
                     self.session_id = session_id
