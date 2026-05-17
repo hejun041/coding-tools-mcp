@@ -184,6 +184,7 @@ class MCPContractTests(ComplianceTestCase):
             urllib.request.urlopen(request, timeout=5)
         self.assertEqual(cm.exception.code, 400)
         body = json.loads(cm.exception.read().decode("utf-8"))
+        self.assertIsNone(body.get("id"))
         self.assertEqual(body.get("error", {}).get("code"), -32600)
         self.assertIn("Unsupported MCP protocol version", body.get("error", {}).get("message", ""))
 
@@ -241,6 +242,7 @@ class MCPContractTests(ComplianceTestCase):
             with self.subTest(origin=origin):
                 status, response = self.raw_http_post(body, headers={"Origin": origin})
                 self.assertEqual(status, 403)
+                self.assertIsNone(response.get("id"))
                 self.assertEqual(response.get("error", {}).get("code"), -32600)
                 self.assertIn("Origin denied", response.get("error", {}).get("message", ""))
 
@@ -255,6 +257,24 @@ class MCPContractTests(ComplianceTestCase):
         self.assertEqual(rejected_status, 404)
         self.assertEqual(rejected.get("error", {}).get("code"), -32001)
         self.assertIn("Unknown MCP session", rejected.get("error", {}).get("message", ""))
+
+    def test_http_pre_dispatch_errors_include_null_json_rpc_id(self) -> None:
+        cases = [
+            (
+                "unknown endpoint",
+                b'{"jsonrpc":"2.0","id":1,"method":"ping","params":{}}',
+                {"path": "/not-mcp"},
+                404,
+                -32601,
+            ),
+            ("non_object_request", b"1", {}, 400, -32600),
+        ]
+        for name, body, kwargs, status_code, error_code in cases:
+            with self.subTest(name=name):
+                status, response = self.raw_http_post(body, **kwargs)
+                self.assertEqual(status, status_code)
+                self.assertIsNone(response.get("id"))
+                self.assertEqual(response.get("error", {}).get("code"), error_code)
 
     def test_http_rejects_malformed_json_rpc_envelopes_and_params(self) -> None:
         cases = [
@@ -482,6 +502,7 @@ class MCPContractTests(ComplianceTestCase):
         content_type: str = "application/json",
         content_length: int | str | None = None,
         headers: dict[str, str] | None = None,
+        path: str | None = None,
     ) -> tuple[int, dict[str, Any]]:
         self.assertIsNotNone(self.client.url)
         parsed = urllib.parse.urlparse(str(self.client.url))
@@ -489,7 +510,7 @@ class MCPContractTests(ComplianceTestCase):
         self.assertIsNotNone(parsed.hostname)
         connection = http.client.HTTPConnection(parsed.hostname, parsed.port, timeout=5)
         try:
-            connection.putrequest("POST", parsed.path or "/mcp")
+            connection.putrequest("POST", path or parsed.path or "/mcp")
             connection.putheader("Accept", "application/json, text/event-stream")
             connection.putheader("Content-Type", content_type)
             connection.putheader("MCP-Protocol-Version", "2025-06-18")

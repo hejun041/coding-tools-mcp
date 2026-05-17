@@ -2202,7 +2202,7 @@ class MCPHandler(http.server.BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         request_path = self.path.split("?", 1)[0]
         if posixpath.normpath(request_path) != "/mcp":
-            self.send_json({"jsonrpc": "2.0", "error": {"code": -32601, "message": "Unknown endpoint"}}, status=404)
+            self.send_json({"jsonrpc": "2.0", "id": None, "error": {"code": -32601, "message": "Unknown endpoint"}}, status=404)
             return
         if self.headers.get_content_type().lower() != "application/json":
             self.send_json(
@@ -2219,6 +2219,7 @@ class MCPHandler(http.server.BaseHTTPRequestHandler):
             self.send_json(
                 {
                     "jsonrpc": "2.0",
+                    "id": None,
                     "error": {
                         "code": -32600,
                         "message": "Unsupported MCP protocol version",
@@ -2230,7 +2231,7 @@ class MCPHandler(http.server.BaseHTTPRequestHandler):
             return
         origin = self.headers.get("Origin")
         if origin and not is_allowed_origin(origin):
-            self.send_json({"jsonrpc": "2.0", "error": {"code": -32600, "message": "Origin denied"}}, status=403)
+            self.send_json({"jsonrpc": "2.0", "id": None, "error": {"code": -32600, "message": "Origin denied"}}, status=403)
             return
         session_id = self.headers.get("Mcp-Session-Id")
         if session_id and session_id != self.runtime.http_session_id:
@@ -2334,7 +2335,7 @@ class MCPHandler(http.server.BaseHTTPRequestHandler):
             self.send_json(responses)
             return
         if not isinstance(request, dict):
-            self.send_json({"jsonrpc": "2.0", "error": {"code": -32600, "message": "Invalid Request"}}, status=400)
+            self.send_json({"jsonrpc": "2.0", "id": None, "error": {"code": -32600, "message": "Invalid Request"}}, status=400)
             return
         response = self.handle_rpc(request)
         if response is None:
