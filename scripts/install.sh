@@ -16,6 +16,7 @@ AUTH_MODE="${CODING_TOOLS_MCP_AUTH_MODE:-}"
 AUTH_TOKEN="${CODING_TOOLS_MCP_AUTH_TOKEN:-}"
 SERVER_BIN="${CODING_TOOLS_MCP_SERVER_BIN:-}"
 SERVER_PID=""
+TUNNEL_TOOL=""
 
 usage() {
   cat <<'EOF'
@@ -279,7 +280,7 @@ ensure_tunnel_command() {
     *) die "unknown tunnel provider: $provider" ;;
   esac
   if command -v "$tool" >/dev/null 2>&1; then
-    printf "%s\n" "$tool"
+    TUNNEL_TOOL="$tool"
     return
   fi
   case "$tool" in
@@ -290,7 +291,7 @@ ensure_tunnel_command() {
   if ! command -v "$tool" >/dev/null 2>&1; then
     die "$tool is still not available on PATH after install"
   fi
-  printf "%s\n" "$tool"
+  TUNNEL_TOOL="$tool"
 }
 
 generate_token() {
@@ -431,7 +432,8 @@ start_tunnel() {
   local bin tool
   bin="$(find_installed_command)" || die "could not locate ${SCRIPT_NAME}; install failed or PATH is missing"
   [[ -d "$WORKSPACE" ]] || die "workspace does not exist: $WORKSPACE"
-  tool="$(ensure_tunnel_command "$TUNNEL_PROVIDER")"
+  ensure_tunnel_command "$TUNNEL_PROVIDER"
+  tool="$TUNNEL_TOOL"
   local args=()
   while IFS= read -r -d '' arg; do
     args+=("$arg")
