@@ -170,14 +170,14 @@ Generic MCP clients that support custom headers should use:
 URL: https://<$host_placeholder>/mcp
 Header: Authorization: Bearer $token
 
-ChatGPT Apps SDK developer connectors do not use arbitrary bearer headers.
-Use CODING_TOOLS_MCP_AUTH_MODE=noauth for ChatGPT developer-mode testing,
-or implement OAuth 2.1 for authenticated production apps.
+Remote MCP clients that cannot send custom bearer headers should use
+CODING_TOOLS_MCP_AUTH_MODE=noauth only with read-only local/testing tunnels,
+or rely on an external auth proxy for authenticated production deployments.
 EOF
   else
     cat <<EOF
 
-ChatGPT developer connector URL:
+Remote MCP client URL:
 https://<$host_placeholder>/mcp
 
 No Authorization header is used. Keep this profile read-only unless you

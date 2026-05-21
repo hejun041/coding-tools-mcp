@@ -13,7 +13,7 @@ It is not a prompt wrapper. It does not expose external agent accounts, memory, 
 
 - [Quickstart](docs/quickstart.md)
 - [MCP client configuration](docs/mcp-client-config.md)
-- [ChatGPT remote MCP](docs/chatgpt-remote-mcp.md)
+- [Remote MCP](docs/remote-mcp.md)
 - [Tools and schemas](docs/tools-and-schemas.md)
 - [Security policy](SECURITY.md)
 - [CI and test commands](docs/ci-and-tests.md)
@@ -112,9 +112,9 @@ Cursor:
 
 Generic Streamable HTTP clients should use MCP protocol version `2025-06-18` and point at `http://127.0.0.1:8765/mcp`.
 
-## ChatGPT Remote MCP
+## Remote MCP
 
-ChatGPT developer-mode connectors do not use arbitrary static bearer headers. For local development, expose a loopback server through an HTTPS tunnel in anonymous `read-only` mode:
+For remote MCP clients and local development over an HTTPS tunnel, keep the server bound to loopback and expose the tunnel URL with the safest profile your client can use. Anonymous tunnel testing should use `read-only` mode:
 
 ```bash
 CODING_TOOLS_MCP_AUTH_MODE=noauth \
@@ -122,7 +122,7 @@ CODING_TOOLS_MCP_TOOL_PROFILE=read-only \
 ./scripts/tunnel.sh cloudflared /path/to/repo
 ```
 
-Configure the ChatGPT connector with the HTTPS tunnel URL:
+Configure the remote MCP client with the HTTPS tunnel URL:
 
 ```text
 URL: https://<tunnel-host>/mcp
@@ -136,9 +136,9 @@ scripts/tunnel.sh ngrok /path/to/repo
 scripts/tunnel.sh devtunnel /path/to/repo
 ```
 
-Authenticated ChatGPT apps require OAuth 2.1 discovery and authorization; that is not implemented here. Static bearer-token auth is still available for generic MCP clients that support custom `Authorization` headers.
+For clients that support custom headers, use bearer-token auth with `Authorization: Bearer <token>`. Clients that cannot send custom bearer headers should use anonymous `read-only` mode only for local/testing tunnels, or be placed behind an external auth proxy for production use.
 
-See [docs/chatgpt-remote-mcp.md](docs/chatgpt-remote-mcp.md) for the exact modes and security notes.
+See [docs/remote-mcp.md](docs/remote-mcp.md) for the exact modes and security notes.
 
 ## Tool Profiles
 
